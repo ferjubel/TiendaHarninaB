@@ -1,4 +1,4 @@
-/**
+    /**
  * Created by Luciano on 03/10/2018.
  */
 
@@ -238,7 +238,7 @@ STORE.namespace('STORE.ValidacionExpresionRegular');
 
                 } while (i < parametro.nodo.value.length - 1 && esValido);
 
-                if (esValido && parametro.nodo.value.substring(0, 1).toUpperCase() == "X") {
+                if (esValido && parametro.nodo.value.substring(0, 1).toUpperCase() === "X") {
                     nie = "0" + parametro.nodo.value.substring(1, 9);
                 } else if (esValido && parametro.nodo.value.substring(0, 1).toUpperCase() == "Y") {
                     nie = "1" + parametro.nodo.value.substring(1, 9);

@@ -6,6 +6,7 @@ STORE.clientStrategyOne = function () {
 
     var form = $("client_register");
 
+    console.log(form)
     STORE.list_input = form.querySelectorAll("[data-functioncallback]");
 
     eval("div_" + STORE.list_input[0].id).style.display = '';

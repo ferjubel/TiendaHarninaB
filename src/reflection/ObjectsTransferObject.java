@@ -17,7 +17,7 @@ public class ObjectsTransferObject {
             Method [] metodosTemp = objectos[i].getClass().getDeclaredMethods();
 
             for (int k = 0; k < metodosMolde.length; k++) {
-                System.out.println(m++);
+                //System.out.println(m++);
                 if(metodosMolde[k].getName().substring(0,3).equals("set")){
 
 

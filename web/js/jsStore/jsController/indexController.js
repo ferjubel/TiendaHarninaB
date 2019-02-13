@@ -9,12 +9,15 @@ $("op_addClient").addEventListener("click", function () {
     STORE.clientStrategyOne();
     ponerListenerEnSubmit("/register", funcionControladoraInsert);
 });
-
 $("op_initSession").addEventListener("click", function () {
+    validadorLogin();
+});
+
+var validadorLogin = function(){
     $("cuerpo").innerHTML = STORE.clientTemplate.loginTemplate;
     STORE.clientStrategyOne();
     ponerListenerEnSubmit("/validateSession", funcionControladoraLogin);
-});
+}
 
 function ponerListenerEnSubmit(rutaControlador, funcionControladora) {
     $("submit").addEventListener("click", function () {
@@ -22,6 +25,8 @@ function ponerListenerEnSubmit(rutaControlador, funcionControladora) {
         for (i = 0; i < STORE.list_input.length; i++) {
             json[STORE.list_input[i].id] = STORE.list_input[i].value;
         }
+        console.log(json)
+        alert(json);
         llamada = new ajax.CargadorContenidos(rutaControlador, funcionControladora, JSON.stringify(json));
     })
 }
@@ -90,3 +95,5 @@ function funcionControladoraInsert() {
         tratarErrores(estado);
     }
 }
+
+

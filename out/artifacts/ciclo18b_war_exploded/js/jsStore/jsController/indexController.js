@@ -9,20 +9,24 @@ $("op_addClient").addEventListener("click", function () {
     STORE.clientStrategyOne();
     ponerListenerEnSubmit("/register", funcionControladoraInsert);
 });
-
 $("op_initSession").addEventListener("click", function () {
+    validadorLogin();
+});
+
+var validadorLogin = function(){
     $("cuerpo").innerHTML = STORE.clientTemplate.loginTemplate;
     STORE.clientStrategyOne();
     ponerListenerEnSubmit("/validateSession", funcionControladoraLogin);
-});
+}
 
 function ponerListenerEnSubmit(rutaControlador, funcionControladora) {
     $("submit").addEventListener("click", function () {
         var json = {};
         for (i = 0; i < STORE.list_input.length; i++) {
             json[STORE.list_input[i].id] = STORE.list_input[i].value;
-            console.dir(json);
         }
+        console.log(json)
+        alert(json);
         llamada = new ajax.CargadorContenidos(rutaControlador, funcionControladora, JSON.stringify(json));
     })
 }
@@ -41,6 +45,7 @@ function funcionControladoraLogin() {
         tratarErrores(estado);
         STORE.Error.set_message("Te quedan " + (estado.maxIntento - estado.intento) + " intento(s)")
     }
+
     else {
         $("menuPrincipal").style.display = "none";
         $("cuerpo").innerHTML = STORE.clientTemplate.formSessionLocked;
@@ -71,7 +76,6 @@ function funcionControladoraLogin() {
 
 };
 
-
 function tratarErrores(estado) {
     estado.forEach(function (error) {
         //$(error.control).style.backgroundColor = STORE.Error.get_colorError();
@@ -84,15 +88,12 @@ function tratarErrores(estado) {
 function funcionControladoraInsert() {
     var estado = JSON.parse(llamada.req.responseText);
 
-    if (typeof estado === "number") {
-        if (estado == 0) {
-            alert(estado);//cliente no insertado
-        }
-        else alert(estado); //cliente insertado
-
+    if (estado.nif != "undefined") {
+        location.reload();
     }
     else {
         tratarErrores(estado);
-
     }
 }
+
+

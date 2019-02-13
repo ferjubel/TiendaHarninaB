@@ -1,8 +1,6 @@
-/**
- * Created by Luciano on 16/10/2018.
- */
 STORE.namespace('STORE.Error');
-
+STORE.namespace('STORE.managementError');
+STORE.managementError=this;
 'use strict';
 
 STORE.Error.on = function () {
@@ -21,4 +19,3 @@ STORE.Error.get_colorError = function () {
 
     return STORE.Color.colorError;
 };
-

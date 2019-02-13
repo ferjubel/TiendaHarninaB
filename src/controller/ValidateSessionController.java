@@ -81,7 +81,7 @@ public class ValidateSessionController extends HttpServlet {
         this.arrayJson = new JSONArray();
     }
 
-    private boolean comprobarLogin() throws IOException {
+    private boolean comprobarLogin() throws IOException, IllegalAccessException, ParseException, InstantiationException, SQLException, InvocationTargetException, ClassNotFoundException {
         HashMap <String,Error> errors = new ComandValidateLogin(login).useCommands();
         if(!errors.isEmpty()){
             for(Map.Entry<String, Error> entry : errors.entrySet()) {
@@ -92,7 +92,7 @@ public class ValidateSessionController extends HttpServlet {
             response.setCharacterEncoding("UTF-8");
             response.getWriter().write(arrayJson.toJSONString());
         }
-        return true;
+        return !((String) new GenericDao().execProcedure(ProceduresClient.GET_NIF_LOGIN.getName(),login)).isEmpty();
     }
 
     private String getNifDeDataBase() throws InstantiationException, IllegalAccessException, ClassNotFoundException, SQLException, InvocationTargetException, ParseException {

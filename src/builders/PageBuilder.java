@@ -32,7 +32,7 @@ public class PageBuilder {
         domBuilding.append(getBody(page));
         domBuilding.append("</HTML>");
         domBuilding.append(getJs(page));
-        System.out.println(domBuilding);
+     //   System.out.println(domBuilding);
         return new String(domBuilding);
     }
 

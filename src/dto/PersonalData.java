@@ -20,7 +20,7 @@ public class PersonalData {
     private String address;
     private String postalCode;
     private String birthDate;
-    private String phone;
+    private int phone;
     private String mobile;
     private String sex;
     private String email;
@@ -97,11 +97,11 @@ public class PersonalData {
 
     @Basic
     @Column(name = "phone")
-    public String getPhone() {
+    public int getPhone() {
         return phone;
     }
 
-    public void setPhone(String phone) {
+    public void setPhone(int phone) {
         this.phone = phone;
     }
 

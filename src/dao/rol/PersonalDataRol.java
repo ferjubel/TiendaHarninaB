@@ -1,7 +1,8 @@
 package dao.rol;
+
 import dao.poolConexion.ClienteMySqlConnectionPool;
-        import java.sql.Connection;
-        import java.sql.SQLException;
+import java.sql.Connection;
+import java.sql.SQLException;
 
 public class PersonalDataRol extends Rol {
 
@@ -15,9 +16,7 @@ public class PersonalDataRol extends Rol {
         super(usuario,pass,conexionesIniciales,conexionesMaximas,new ClienteMySqlConnectionPool());
     }
 
-    @Override
-    public Connection getConnection() throws SQLException, ClassNotFoundException {
+    public Connection getConnection () throws SQLException, ClassNotFoundException {
         return super.getConnection(this);
     }
-
 }

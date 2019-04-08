@@ -30,7 +30,7 @@ public class PostalCode {
     }
     
     public boolean check_cp() throws SQLException, InstantiationException, IllegalAccessException, ParseException, InvocationTargetException, ClassNotFoundException {
-        return ((Object)(new GenericDao().execProcedure(ProceduresClient.CHECK_CP.getName(),this))!=null);
+        return (new GenericDao().execProcedure(ProceduresClient.CHECK_CP.getName(),this) !=null);
     }
 
     public ArrayList<String> getCodigosPostales() throws IllegalAccessException, ParseException, InstantiationException, SQLException, InvocationTargetException, ClassNotFoundException {

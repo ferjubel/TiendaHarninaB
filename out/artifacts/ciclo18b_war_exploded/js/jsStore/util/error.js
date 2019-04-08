@@ -1,21 +1,30 @@
-STORE.namespace('STORE.Error');
 STORE.namespace('STORE.managementError');
-STORE.managementError=this;
-'use strict';
 
-STORE.Error.on = function () {
-    $("alertaError").style.display = "";
-};
+    STORE.managementError = function(){
 
-STORE.Error.off = function () {
-    $("alertaError").style.display = "none";
-};
+    'use strict';
 
-STORE.Error.set_message = function (message) {
-    $("alertaError").innerHTML = message;
-};
+    var error = $("alertaError");
 
-STORE.Error.get_colorError = function () {
+    return {
 
-    return STORE.Color.colorError;
+        on  : function(){
+            error.style.display = "";
+        },
+
+        off  : function(){
+            error.style.display = "none";
+        },
+
+        set_message : function(message){
+            error.innerHTML = message;
+        },
+
+        get_colorError : function(){
+
+            return STORE.Color.colorError;
+        }
+
+    };
+
 };

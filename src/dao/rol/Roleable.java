@@ -5,13 +5,13 @@ import java.sql.SQLException;
 
 public interface Roleable {
 
-    public String getUsuario();
+    String getUsuario();
 
-	public String getPass();
+	String getPass();
 
-	public int getConexionesIniciales();
+	int getConexionesIniciales();
 
-	public int getConexionesMaximas();
+	int getConexionesMaximas();
 
     Connection getConnection() throws SQLException, ClassNotFoundException;
 }

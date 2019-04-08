@@ -44,11 +44,7 @@ public class DNINIFValidator implements Validator {
             }
         }
 
-        if (cuenta != cadena.length()) {
-            return false;
-        }
-
-        return true;
+        return cuenta == cadena.length();
     }
 
     private String getLetraDNI() {

@@ -13,7 +13,7 @@ public class OffLocked extends HttpServlet {
 
     private static final long serialVersionUID = 1L;
     HttpSession session;
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         session = request.getSession();
         session.setAttribute("intento",0);
         response.setCharacterEncoding("UTF-8");

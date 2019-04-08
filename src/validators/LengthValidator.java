@@ -26,10 +26,9 @@ public class LengthValidator implements Validator {
     public Error validate() {
 
         if (this.minimo <= this.cadena.length() && this.cadena.length() <= this.maximo) {
+            System.out.println("solo se dar fallos ajam: " + cadena);
             return null;
         }
-        System.out.println("minimo"+this.minimo+" length "+this.cadena.length()+" maximo "+this.maximo);
-        System.out.println("solo se dar fallos ajam: " + cadena);
 
         return Error.ERROR_INTERVALO;
     }

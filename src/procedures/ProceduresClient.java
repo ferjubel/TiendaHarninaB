@@ -3,7 +3,7 @@ package procedures;
 public enum ProceduresClient {
     GET_CLIENTE_lOGIN("getClienteLogin"),
     GET_LISTA_CLIENTES("getListaClientes"),
-    GET_NIF_LOGIN("getNifLogin"),
+    GET_ID_LOGIN("getIdLogin"),
     GET_CP("get_cp"),
     GET_CLIENTE("getCliente"),
     INSERT_CLIENT("insertClient"),
@@ -15,8 +15,7 @@ public enum ProceduresClient {
     GET_EMAIL("getEmail"),
     GET_CLAVE("getClave"),
     IS_LOCKED("isLocked"),
-    CHECK_LOGIN("checkLogin"),
-    UNLOCK_CLIENT("unlockClient");
+    UNLOCK_CLIENT("unblockClient");
 
     private final String name;
 

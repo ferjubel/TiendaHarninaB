@@ -6,12 +6,12 @@ import dao.GenericDao;
 import dto.Login;
 import dto.PersonalData;
 import error.Error;
+import org.codehaus.jackson.annotate.JsonCreator;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import procedures.ProceduresClient;
 import reflection.JsonTransferObject;
-
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
@@ -45,11 +45,8 @@ public class RegisterController extends HttpServlet {
 
         try {
             iniciarDatos(request, response);
-            System.out.println("1");
             new JsonTransferObject().transferir(login, (JSONObject) new JSONParser().parse(request.getParameter("json")));
-            System.out.println("2");
             new JsonTransferObject().transferir(personalData, (JSONObject) new JSONParser().parse(request.getParameter("json")));
-            System.out.println("3");
             if (comprobarDatos()) {
                 gestionarDatosCorrecto();
             } else {
@@ -62,10 +59,8 @@ public class RegisterController extends HttpServlet {
 
     private void gestionarDatosIncorrecto() throws IOException {
         for (Map.Entry<String, Error> entry : listaErrores.entrySet()) {
-            System.out.println("JSON Errores");
             oneJson.put("control", entry.getKey());
             oneJson.put("mensajeError", entry.getValue().getMessage());
-            System.out.println("eeeeeeeeeeeeeeeeeee"+oneJson.toJSONString());
             arrayJson.add(oneJson);
         }
         response.setCharacterEncoding("UTF-8");
@@ -77,8 +72,8 @@ public class RegisterController extends HttpServlet {
         if ((Integer) new GenericDao().execProcedure(ProceduresClient.INSERT_CLIENT.getName(), personalData, login) > 0) {
             session.setAttribute("pageName", "client");
             response.setCharacterEncoding("UTF-8");
-            oneJson.put("nif" , login.getNif());
-            System.out.println("aaaaaaaaaaaaaaaaaaa"+oneJson.toJSONString());
+            oneJson.put("idClient" , login.getIdClient());
+            session.setAttribute("idClient",login.getIdClient());
             response.getWriter().write(oneJson.toJSONString());
         }
     }
@@ -100,7 +95,7 @@ public class RegisterController extends HttpServlet {
     }
 
 
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) {
         doPost(request, response);
     }
 
@@ -114,4 +109,3 @@ public class RegisterController extends HttpServlet {
     }
 
 }
-

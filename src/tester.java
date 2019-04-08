@@ -48,8 +48,8 @@ public class tester {
  class AccesoDB {
     private static AccesoDB miConexion = null;
     private Connection conexion = null;
-    private String driver = null;
-    private String dbName= null;
+     private String driver = null;
+     private String dbName= null;
     private String user = null;
     private String password= null;
 

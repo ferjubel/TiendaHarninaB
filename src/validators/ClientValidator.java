@@ -23,8 +23,8 @@ public class ClientValidator {
         errors.add(new ValidarDomicilio(personalData.getAddress()).validate());
         errors.add(new LengthValidator(personalData.getAddress(), 2, 100).validate());
         errors.add(new ValidacionTelefonoSpain(String.valueOf(personalData.getPhone())).validate());
-        errors.add(new ValidacionTelefonoSpain(personalData.getMobile()).validate());
-        errors.add(new DateValidator(personalData.getBirthDate().toString()).validate());
+        errors.add(new ValidacionTelefonoSpain(String.valueOf(personalData.getMobile())).validate());
+        errors.add(new DateValidator(personalData.getBirthDate()).validate());
         errors.add(new SexValidator(personalData.getSex()).validate());
         errors.add(new EmailValidator(personalData.getEmail()).validate());
         errors.add(new VerificacionCodigoPostal(new PostalCode(personalData.getPostalCode()).check_cp()).validate());

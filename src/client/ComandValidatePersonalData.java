@@ -28,9 +28,9 @@ public class ComandValidatePersonalData implements ComandValidate {
         errors.put("postalCode",new PostalCodeValidator(personalData.getPostalCode()).validate());
         errors.put("address",new ValidarDomicilio(personalData.getAddress()).validate());
         errors.put("address",new LengthValidator(personalData.getAddress(), 2, 100).validate());
-        errors.put("phone",new ValidacionTelefonoSpain(String.valueOf(personalData.getPhone())).validate());
-       //TODO me cago en dios errors.put("mobile",new ValidacionTelefonoSpain(personalData.getMobile()).validate());
-        errors.put("birthDate",new DateValidator(personalData.getBirthDate().toString()).validate());
+        errors.put("phone",new ValidacionTelefonoSpain(personalData.getPhone()).validate());
+        errors.put("mobile",new ValidacionTelefonoSpain(personalData.getMobile()).validate());
+        errors.put("birthDate",new DateValidator(personalData.getBirthDate()).validate());
         errors.put("sex",new SexValidator(personalData.getSex()).validate());
         errors.put("email",new EmailValidator(personalData.getEmail()).validate());
         errors.put("postalCode",new VerificacionCodigoPostal(new PostalCode(personalData.getPostalCode()).check_cp()).validate());

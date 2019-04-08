@@ -18,7 +18,7 @@ public class ComandValidateLogin implements ComandValidate {
     public HashMap<String, Error> useCommands() {
 
         HashMap<String, Error> errors = new HashMap<>();
-        errors.put("userName", new UserValidator(login.getUserName()).validate()); //TODO aqui me entra un nulo compadre
+        errors.put("userName", new UserValidator(login.getUserName()).validate());
         errors.put("userPassword", new PasswordValidator(login.getUserPassword()).validate());
         errors.entrySet().removeIf(entries -> entries.getValue() == null);
 

@@ -19,12 +19,15 @@ import java.io.UnsupportedEncodingException;
 import java.lang.reflect.InvocationTargetException;
 import java.sql.SQLException;
 import java.text.ParseException;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
 @WebServlet("/validateSession")
 public class ValidateSessionController extends HttpServlet {
+
+    //TODO posibles parametros del Json METER EN ENUM si hay tiempo y hacer lo mismo con los de session
+    private static final String ERROR = "mensajeError", ERRORVERIFICACION = "errorVerificacion",
+            MAX_INTENTO = "maxIntento", INTENTO = "intento", ID = "idClient", CONTROL = "control";
 
     private static final long serialVersionUID = 1L;
     private static final int INTENTOSPERMITIDOS = 3;
@@ -37,43 +40,47 @@ public class ValidateSessionController extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
         try {
-            iniciarDatos(request,response);
-            new JsonTransferObject().transferir(login,(JSONObject) new JSONParser().parse(request.getParameter("json")));
-            if (comprobarLogin()) {
+            iniciarDatos(request, response);
+            transferJsonToObject(request, login);
+            if (validarLogin() && verificarLogin()) {
                 gestionarLoginCorrecto();
-            } else {
-                gestionarLoginIncorrecto();
-            }
+            }//chin pum
         } catch (IllegalAccessException | InvocationTargetException | InstantiationException | ClassNotFoundException | SQLException | ParseException | org.json.simple.parser.ParseException e) {
             e.printStackTrace();
         }
     }
 
-    private void gestionarLoginIncorrecto() throws IOException {
-        incrementarIntento();
-        if (!disponibilidadIntento()) {
-            session.setAttribute("horaBloqueo", new Date());
-            oneJson.put("tiempoMaximoBloqueo",session.getAttribute("tiempoMaximoBloqueo"));
+    private void transferJsonToObject(HttpServletRequest request, Object object) throws InvocationTargetException, IllegalAccessException, org.json.simple.parser.ParseException {
+        new JsonTransferObject().transferir(object, (JSONObject) new JSONParser().parse(request.getParameter("json")));
+    }
+
+    private boolean verificarLogin() throws IllegalAccessException, ParseException, InstantiationException, SQLException, InvocationTargetException, ClassNotFoundException, IOException {
+        login.setIdClient(getIdDeDataBase());
+        if (login.getIdClient() == null) {
+            oneJson.put(ERRORVERIFICACION, "error de verificacion");
+            incrementarIntento();
+            oneJson.put(MAX_INTENTO, String.valueOf(INTENTOSPERMITIDOS));
+            oneJson.put(INTENTO, String.valueOf(session.getAttribute("intento")));
+            llamadaAjax(oneJson.toJSONString());
+            return false;
         }
+        session.setAttribute("idClient",login.getIdClient());
+        return true;
+    }
 
-        oneJson.put("maxIntento", session.getAttribute("maxIntento"));
-        oneJson.put("intento", session.getAttribute("intento"));
 
+    private void llamadaAjax(String s) throws IOException {
         response.setCharacterEncoding("UTF-8");
-        response.getWriter().write(oneJson.toJSONString());
+        response.getWriter().write(s);
     }
 
-    private void gestionarLoginCorrecto() throws IllegalAccessException, ParseException, InstantiationException, SQLException, InvocationTargetException, ClassNotFoundException, IOException {
-        login.setNif(getNifDeDataBase());
-        if(login.getNif()!=null){
-            session.setAttribute("pageName","client");
-            response.setCharacterEncoding("UTF-8");
-            oneJson.put("nif" , login.getNif());
-            response.getWriter().write(oneJson.toJSONString());
-        }
+    private void gestionarLoginCorrecto() throws IllegalAccessException, IOException {
+        session.setAttribute("pageName", "client");
+        oneJson.put(ID, login.getIdClient());
+        llamadaAjax(oneJson.toJSONString());
     }
 
-    private void iniciarDatos(HttpServletRequest request, HttpServletResponse response) throws UnsupportedEncodingException {
+    private void iniciarDatos(HttpServletRequest request, HttpServletResponse response) {
         this.session = request.getSession();
         this.response = response;
         this.login = new Login();
@@ -81,31 +88,25 @@ public class ValidateSessionController extends HttpServlet {
         this.arrayJson = new JSONArray();
     }
 
-    private boolean comprobarLogin() throws IOException, IllegalAccessException, ParseException, InstantiationException, SQLException, InvocationTargetException, ClassNotFoundException {
-        HashMap <String,Error> errors = new ComandValidateLogin(login).useCommands();
-        if(!errors.isEmpty()){
-            for(Map.Entry<String, Error> entry : errors.entrySet()) {
-                oneJson.put("control" ,entry.getKey());
-                oneJson.put("mensajeError" , entry.getValue().getMessage());
+    private boolean validarLogin() throws IOException {
+        HashMap<String, Error> errors = new ComandValidateLogin(login).useCommands();
+        if (!errors.isEmpty()) {
+            for (Map.Entry<String, Error> entry : errors.entrySet()) {
+                oneJson.put(CONTROL, entry.getKey());
+                oneJson.put(ERROR, entry.getValue().getMessage());
                 arrayJson.add(oneJson);
             }
-            response.setCharacterEncoding("UTF-8");
-            response.getWriter().write(arrayJson.toJSONString());
+            llamadaAjax(arrayJson.toJSONString());
         }
-        return !((String) new GenericDao().execProcedure(ProceduresClient.GET_NIF_LOGIN.getName(),login)).isEmpty();
+        return true;
     }
 
-    private String getNifDeDataBase() throws InstantiationException, IllegalAccessException, ClassNotFoundException, SQLException, InvocationTargetException, ParseException {
-        return (String) new GenericDao().execProcedure(ProceduresClient.GET_NIF_LOGIN.getName(), login);
-    }
-
-    private boolean disponibilidadIntento() {
-        return session.getAttribute("intento") != null &&
-                INTENTOSPERMITIDOS < (int) session.getAttribute("intento");
+    private Integer getIdDeDataBase() throws InstantiationException, IllegalAccessException, ClassNotFoundException, SQLException, InvocationTargetException, ParseException {
+        return Integer.valueOf((String)new GenericDao().execProcedure(ProceduresClient.GET_ID_LOGIN.getName(), login));
     }
 
     private void incrementarIntento() {
-        if (session.getAttribute("intento") == null) session.setAttribute("intento", 1);
+        if (session.getAttribute("intento") == null) session.setAttribute("intento", 0);
         else session.setAttribute("intento", (int) session.getAttribute("intento") + 1);
     }
 

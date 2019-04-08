@@ -8,23 +8,23 @@ public class ImageCharger {
 
     private String fileName;
     private Part filePart;
-    private String dniCliente;
+    private String idClient;
     private String path;
 
-    public ImageCharger(Part filePart, String path, String dniCliente) throws IOException, ServletException {
+    public ImageCharger(Part filePart, String path, String idClient) {
         this.filePart = filePart;
         this.fileName = getFileName(filePart);
-        this.dniCliente = dniCliente;
+        this.idClient = idClient;
         this.path = path;
     }
     //el filePart se obtiene request.getPart("imagenCliente")
     //el path getServletContext().getRealPath("img/fotoClient/");
 
-    public void clientFotoLoad() throws IOException, ServletException {
+    public void clientFotoLoad() throws IOException {
 
         if (fileName.length() > 2) {
 
-            fileName = dniCliente + ".png";
+            fileName = idClient + ".png";
 
             File folder = new File(path);
             if (!folder.exists()) {

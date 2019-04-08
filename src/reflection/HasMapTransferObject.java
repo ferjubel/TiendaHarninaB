@@ -1,5 +1,6 @@
 package reflection;
 
+import utils.SetterHelper;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
@@ -10,38 +11,24 @@ import java.util.HashMap;
 
 public class HasMapTransferObject {
 
-    public Object crearPojo(HashMap<String, Object> datosFila, String clasePojo) throws ClassNotFoundException, IllegalAccessException, InstantiationException, InvocationTargetException, ParseException {
+   public Object crearPojo(HashMap<String, Object> datosFila, String clasePojo) throws ClassNotFoundException, IllegalAccessException, InstantiationException, InvocationTargetException {
 
-        Class genericClass = Class.forName(clasePojo);
-
-        Object genericObject = genericClass.newInstance();
+        Object genericObject = Class.forName(clasePojo).newInstance();
 
         Method[] metodosDeclarados = genericObject.getClass().getDeclaredMethods();
 
         Field[] atributos = genericObject.getClass().getDeclaredFields();
 
         for (int i = 0; i < metodosDeclarados.length; i++) {
-
             for (int j = 0; j < atributos.length; j++) {
-               // System.out.println("metodo: " + metodosDeclarados[i].getName() + "\t|atributo: " + atributos[j].getName() + "\t|dato: " + datosFila.get(atributos[j].getName().toString()));//datosFila.get(atributos[j].getName().toString()));  //.toString()));
-
                 if (metodosDeclarados[i].getName().toLowerCase().contains("set" + atributos[j].getName().toLowerCase())) {
-
-                   // System.out.println("metodo: " + metodosDeclarados[i].getName() + "\t|atributo: " + atributos[j].getName() + "\t|dato: " + datosFila.get(atributos[j].getName().toString()));//datosFila.get(atributos[j].getName().toString()));  //.toString()));
-                    try {
-                        metodosDeclarados[i].invoke(genericObject, datosFila.get(atributos[j].getName().toLowerCase())); //.toString()));
-                    }catch (IllegalArgumentException e){
-                        SimpleDateFormat simpleFormat = new SimpleDateFormat("dd/MM/yyyy");
-                        String dateFormat = simpleFormat.format(datosFila.get(atributos[j].getName().toLowerCase()));
-                        metodosDeclarados[i].invoke(genericObject,dateFormat);
-                    }
-
+                    new SetterHelper().ejecutarSet(datosFila.get(atributos[j].getName().toLowerCase()), genericObject, metodosDeclarados[i]);
                 }
-
             }
-
         }
         return genericObject;
     }
+
+
 
 }

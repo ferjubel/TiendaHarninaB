@@ -56,5 +56,6 @@
     <orderEntry type="library" name="org.codehaus.jackson:jackson-xc:1.9.13" level="project" />
     <orderEntry type="library" name="jackson:jackson-asl:0.9.3" level="project" />
     <orderEntry type="library" name="com.google.code.gson:gson:2.8.2" level="project" />
+    <orderEntry type="library" name="com.google.code.gson:gson:2.8.5" level="project" />
   </component>
 </module>

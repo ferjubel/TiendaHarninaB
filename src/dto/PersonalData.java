@@ -2,41 +2,38 @@ package dto;
 
 import reflection.RequestTransferSession;
 import reflection.SessionTransferObject;
-
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Table;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Objects;
 
-@Table(name = "client", schema = "tienda_harnina20189vistas")
 public class PersonalData {
 
+    private String idClient;
     private String nif;
     private String lastName;
     private String firstName;
     private String address;
     private String postalCode;
     private String birthDate;
-    private int phone;
+    private String phone;
     private String mobile;
     private String sex;
     private String email;
     private String image;
 
     //TODO usar HasMapTransferObject
-    public PersonalData(HttpServletRequest request, HttpSession session) throws IllegalAccessException, InstantiationException, InvocationTargetException {
+    public PersonalData(HttpServletRequest request, HttpSession session) throws IllegalAccessException, InvocationTargetException {
         new RequestTransferSession().guardarDatosSesion(request, session);
         new SessionTransferObject(session, this);
+    }
+    public PersonalData(String nif) {
+        this.nif = nif;
     }
 
     public PersonalData() {
     }
 
-    @Basic
-    @Column(name = "nif")
     public String getNif() {
         return nif;
     }
@@ -45,8 +42,6 @@ public class PersonalData {
         this.nif = nif;
     }
 
-    @Basic
-    @Column(name = "lastName")
     public String getLastName() {
         return lastName;
     }
@@ -55,8 +50,6 @@ public class PersonalData {
         this.lastName = lastName;
     }
 
-    @Basic
-    @Column(name = "firstName")
     public String getFirstName() {
         return firstName;
     }
@@ -65,8 +58,6 @@ public class PersonalData {
         this.firstName = firstName;
     }
 
-    @Basic
-    @Column(name = "postalCode")
     public String getPostalCode() {
         return postalCode;
     }
@@ -75,8 +66,6 @@ public class PersonalData {
         this.postalCode = postalCode;
     }
 
-    @Basic
-    @Column(name = "address")
     public String getAddress() {
         return address;
     }
@@ -85,8 +74,6 @@ public class PersonalData {
         this.address = address;
     }
 
-    @Basic
-    @Column(name = "birthDate")
     public String getBirthDate() {
         return birthDate;
     }
@@ -95,18 +82,14 @@ public class PersonalData {
         this.birthDate = birthDate;
     }
 
-    @Basic
-    @Column(name = "phone")
-    public int getPhone() {
+    public String getPhone() {
         return phone;
     }
 
-    public void setPhone(int phone) {
+    public void setPhone(String phone) {
         this.phone = phone;
     }
 
-    @Basic
-    @Column(name = "mobile")
     public String getMobile() {
         return mobile;
     }
@@ -115,8 +98,6 @@ public class PersonalData {
         this.mobile = mobile;
     }
 
-    @Basic
-    @Column(name = "sex")
     public String getSex() {
         return sex;
     }
@@ -125,8 +106,6 @@ public class PersonalData {
         this.sex = sex;
     }
 
-    @Basic
-    @Column(name = "email")
     public String getEmail() {
         return email;
     }
@@ -135,7 +114,13 @@ public class PersonalData {
         this.email = email;
     }
 
+    public String getIdClient() {
+        return idClient;
+    }
 
+    public void setIdClient(String idClient) {
+        this.idClient = idClient;
+    }
 
     @Override
     public int hashCode() {
